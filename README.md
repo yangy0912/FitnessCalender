@@ -6,9 +6,9 @@ Sets and reps
 Authorization
 Storing user data
 Landing page
-# FRONT:
+# Frontend:
 React w/ ts
-# BACK:
+# Backend:
 Firebase
 Typescript
 O-Auth or clerk
