@@ -18,6 +18,6 @@ FitnessCalendar is a web app where you can schedule your workouts on a specific 
 - Mingyang Jiao (University of Washington)
 # Timeline Sheet:
 https://calendar.online/3e5baf89fba8a5509b84
-#dkds
+
 
 
