@@ -14,7 +14,7 @@
     align-items: center;
     position: absolute;
     left: 50%;
-    top: 40%;
+    top: 45%;
     transform: translateX(-50%);
     gap: 150px;
 }
@@ -34,7 +34,7 @@ h1, p, button {
 .page-title {
     color: rgb(24, 188, 253);
     text-align: center;
-    font-size: 5rem;
+    font-size: 7rem;
 }
 
 .motto {
