@@ -1,4 +1,4 @@
-import './App.css'
+import {LandingPage} from "./LandingPage.tsx";
 
 function App() {
 
@@ -20,18 +20,7 @@ function App() {
 
     return (
     <>
-        <div>
-            <video
-                autoPlay muted loop playsInline className="background-video">
-                <source src="/bgVideo.mp4" type="video/mp4"/>
-                Your browser doesn’t support the video tag.
-            </video>
-            <div>
-                <h1 className="landing-title">Title</h1>
-            </div>
-            <button onClick={doCreateAcc} className="auth-button">Create an Account</button>
-            <button onClick={doSignIn} className="auth-button">Sign in</button>
-        </div>
+        <LandingPage onSignInClick={doSignIn} onCreateClick={doCreateAcc} />
     </>
   )
 

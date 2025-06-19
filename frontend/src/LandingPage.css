@@ -24,12 +24,12 @@
     font-size: 2rem;
     color: black;
     padding: 6px 12px;
-    border-radius: 4px';
+    border-radius: 4px;
 }
 
 h1, p, button {
     font-family: 'Times New Roman', sans-serif;
-  }
+}
 
 .page-title {
     color: rgb(24, 188, 253);
@@ -43,4 +43,3 @@ h1, p, button {
     margin-top: 400px;
     color: rgb(24, 188, 253);
 }
-
