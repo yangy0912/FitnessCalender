@@ -1,6 +1,7 @@
 import express, {type Express } from "express";
 import cors from "cors";
 import bodyParser from 'body-parser';
+import './firebaseConfig'; // ensures Firebase is initialized
 import {signInRequest, createAccRequest} from "./route";
 
 // Configure and start the HTTP server.

@@ -1,4 +1,5 @@
 **/*.mp4
+.env
 
 # Logs
 logs

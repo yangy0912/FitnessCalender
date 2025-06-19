@@ -1,5 +1,6 @@
 import type {Request, Response} from "express";
 import type {ParamsDictionary} from "express-serve-static-core";
+import { db } from './firebaseConfig';
 
 type SafeRequest = Request<ParamsDictionary, object, Record<string, unknown>>;
 type SafeResponse = Response;
@@ -7,6 +8,7 @@ type SafeResponse = Response;
 export const signInRequest = (req: SafeRequest, res: SafeResponse) => {
     // Supress warnings
     console.log("Sign in request received at:", req.url);
+    testDBchange();
     res.json({ status: "success", message: "Signed in" });
 }
 
@@ -15,3 +17,9 @@ export const createAccRequest = (req: SafeRequest, res: SafeResponse) => {
     console.log("Create Account request received at:", req.url);
     res.json({ status: "success", message: "Account created" });
 }
+
+const testDBchange = async (): Promise<any> => {
+    await db.collection('users').doc('test').set({
+        data: 'Change it to sidd',
+    });
+};
