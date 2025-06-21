@@ -1,5 +1,6 @@
 import {Component, type JSX} from 'react';
 import './LandingPage.css'
+import {SignInButton} from '@clerk/clerk-react'
 
 type LandingPageProps = {
     onSignInClick: () => void;
@@ -29,10 +30,15 @@ export class LandingPage extends Component<LandingPageProps, LandingPageState> {
                         <h1 className="page-title">Fitness Calendar</h1>
                     </div>
                     <div className="button-container">
-                        <button onClick={this.props.onCreateClick} className="auth-button">Create an Account</button>
-                        <button onClick={this.props.onSignInClick} className="auth-button">Sign in</button>
+                        <SignInButton>
+                            <button onClick={this.props.onCreateClick} className="auth-button">Create an Account
+                            </button>
+                        </SignInButton>
+                        <SignInButton>
+                            <button onClick={this.props.onSignInClick} className="auth-button">Sign in</button>
+                        </SignInButton>
                     </div>
-                        <p className="motto">Plan your workouts more efficiently<br/>and never skip days!</p>
+                    <p className="motto">Plan your workouts more efficiently<br/>and never skip days!</p>
                 </div>
             </>
         )
