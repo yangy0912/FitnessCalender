@@ -1,26 +1,42 @@
-import {LandingPage} from "./LandingPage.tsx";
+import { LandingPage } from "./LandingPage.tsx";
+import { useUser } from '@clerk/clerk-react';
+import { useEffect } from "react";
+import { SignedOut, SignedIn } from "@clerk/clerk-react";
+import { CalendarTest } from "./CalendarTest.tsx";
+
+
 
 function App() {
+    const { user, isSignedIn, isLoaded } = useUser();
+
+    useEffect(() => {
+        if (isLoaded && isSignedIn && user) {
+            console.log("User ID")
+            console.log(user.id)
+        }
+    }, [isLoaded, isSignedIn, user])
 
     const doCreateAcc = () : void => {
         console.log("onclick DCA");
-        fetch("http://localhost:8088/api/createAcc")
-            .then (res => res.json())
-            .then(json => console.log(json))
-            .catch(error => console.log(error));
+        console.log("Before useEffect")
+
     }
 
     const doSignIn = () : void => {
         console.log("onclick DSI");
-        fetch("http://localhost:8088/api/signIn")
-            .then (res => res.json())
-            .then(json => console.log(json.status))
-            .catch(error => console.log(error));
+        console.log("Before useEffect")
     }
 
     return (
     <>
-        <LandingPage onSignInClick={doSignIn} onCreateClick={doCreateAcc} />
+        <SignedOut>
+            <LandingPage onSignInClick={doSignIn} onCreateClick={doCreateAcc} />
+        </SignedOut>
+        <SignedIn>
+            
+            <CalendarTest />
+        </SignedIn>
+        
     </>
   )
 
