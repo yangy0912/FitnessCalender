@@ -3,7 +3,7 @@ import {SignOutButton} from "@clerk/clerk-react";
 
 type DataMap = { [date: string]: string[] } | undefined;
 
-type CalenderTestProps = {
+type CalenderProps = {
     userID: string | undefined;
     userName: string | null | undefined;
     userFirstName: string | null | undefined;
@@ -13,26 +13,27 @@ type CalenderTestProps = {
 
 
 
-type CalenderTestState = {
+type CalenderState = {
     data : DataMap
 }
 
 
-export class CalenderTest extends Component<CalenderTestProps, CalenderTestState> {
-    constructor(props: CalenderTestProps) {
+export class Calender extends Component<CalenderProps, CalenderState> {
+    constructor(props: CalenderProps) {
         super(props);
         this.state = {data: this.props.data};
     }
 
     componentDidMount() {
-        console.log("Calender componentDidMount");
-        console.log(this.props.userFirstName);
+        console.log("Calender componentDidMount: " + this.props.userID);
+        console.log("Data: " + this.props.data);
     }
 
     render = () : JSX.Element => {
         return (
             <>
-                <h1>TEST</h1>
+                <h1>Calender</h1>
+                
                 <SignOutButton>
                     <button>Sign out!</button>
                 </SignOutButton>

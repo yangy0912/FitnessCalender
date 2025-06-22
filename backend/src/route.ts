@@ -22,13 +22,15 @@ export const createAccRequest = (req: SafeRequest, res: SafeResponse) => {
 export const getUserData =  async (req: SafeRequest, res: SafeResponse) => {
     const userID = req.query.id;
     console.log(userID);
-    console.log(typeof userID);
     if (typeof userID === 'string') {
         const calenderData = db.collection("users").doc(userID);
         const doc = await calenderData.get();
         if (doc.exists) {
-            res.status(200).json(doc);
+            console.log("First Branch");
+            console.log(doc.data());
+            res.status(200).json(doc.data());
         } else {
+            console.log("Second Branch");
             res.status(200).json({});
         }
     } else {

@@ -1,5 +1,5 @@
 import {LandingPage} from "./LandingPage.tsx";
-import {CalenderTest} from "./CalenderTest.tsx";
+import {Calender} from "./Calender.tsx";
 import { SignedIn, SignedOut, useUser } from '@clerk/clerk-react'
 import {useEffect, useState} from "react";
 
@@ -36,7 +36,6 @@ function App() {
     }, [isLoaded, isSignedIn, user])
 
 
-
     const doCreateAcc = () : void => {
         console.log("onclick DCA");
         fetch("http://localhost:8088/api/createAcc")
@@ -59,8 +58,17 @@ function App() {
             <LandingPage onSignInClick={doSignIn} onCreateClick={doCreateAcc} />
         </SignedOut>
         <SignedIn>
-            <CalenderTest userID={user?.id} userName={user?.username} data={userData}
-                          userFirstName={user?.firstName} userLastName={user?.lastName} />
+            {userData ? (
+                <Calender
+                    userID={user?.id}
+                    userName={user?.username}
+                    userFirstName={user?.firstName}
+                    userLastName={user?.lastName}
+                    data={userData}
+                />
+            ) : (
+                <p>Loading user data...</p>
+            )}
         </SignedIn>
 
     </>
