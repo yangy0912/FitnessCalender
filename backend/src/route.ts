@@ -4,6 +4,7 @@ import { db } from './firebaseConfig';
 
 type SafeRequest = Request<ParamsDictionary, object, Record<string, unknown>>;
 type SafeResponse = Response;
+type DataMap = { [date: string]: string[] } | undefined;
 
 export const signInRequest = (req: SafeRequest, res: SafeResponse) => {
     // Supress warnings
@@ -22,19 +23,51 @@ export const createAccRequest = (req: SafeRequest, res: SafeResponse) => {
 export const getUserData =  async (req: SafeRequest, res: SafeResponse) => {
     const userID = req.query.id;
     console.log(userID);
-    console.log(typeof userID);
     if (typeof userID === 'string') {
         const calenderData = db.collection("users").doc(userID);
         const doc = await calenderData.get();
         if (doc.exists) {
-            res.status(200).json(doc);
+            console.log("First Branch");
+            console.log(doc.data());
+            res.status(200).json(doc.data());
         } else {
+            console.log("Second Branch");
             res.status(200).json({});
         }
     } else {
         res.status(404).send({status: "User Not Found"});
     }
 }
+
+export const updateData = async (req: SafeRequest, res: SafeResponse) => {
+    const userID = req.body.userID as string;
+    const exercise = req.body.addExercise as string;
+    const date = req.body.addDate as string;
+    if (typeof userID === 'string') {
+        const data = db.collection("users").doc(userID);
+        const doc = await data.get();
+        const userData = doc.data();
+        if (userData) {
+            if (!userData['data'][date]) {
+                userData['data'][date] = []
+                userData['data'][date].push(exercise)
+            } else {
+                userData['data'][date].push(exercise)
+            }
+            DBchange(userID, userData)
+            res.json({ status: "success", message: "Data Updated" });
+        }
+    } else {
+        res.status(404).send({status: "User Not Found"})
+    }
+}
+
+const DBchange = async (userID : string, newData : DataMap) : Promise<any> => {
+    if (newData)
+    await db.collection('users').doc(userID).set({
+        data: newData['data']
+    });
+};
 
 const testDBchange = async (): Promise<any> => {
     await db.collection('users').doc('test').set({
@@ -45,9 +78,9 @@ const testDBchange = async (): Promise<any> => {
 const testDBAddMatrix = async (): Promise<any> => {
     await db.collection('users').doc('user_2ypnofjP8HiE3khsBWlsSfBfKuf').set({
         data: {
-            "6/20" : ["a", "b"],
-            "6/21" : ["c", "d"],
-            "6/22" : ["e", "f"]
+            "2025-06-20" : ["a", "b"],
+            "2025-06-21" : ["c", "d"],
+            "2025-06-22" : ["e", "f"]
         }}, { merge: true }
     );
 }

@@ -1,5 +1,5 @@
 import {LandingPage} from "./LandingPage.tsx";
-import {CalendarTest} from "./CalendarTest.tsx";
+import {Calender} from "./Calender.tsx";
 import { SignedIn, SignedOut, useUser } from '@clerk/clerk-react'
 import {useEffect, useState} from "react";
 
@@ -36,7 +36,6 @@ function App() {
     }, [isLoaded, isSignedIn, user])
 
 
-
     const doCreateAcc = () : void => {
         console.log("onclick DCA");
         fetch("http://localhost:8088/api/createAcc")
@@ -53,14 +52,46 @@ function App() {
             .catch(error => console.log(error));
     }
 
+    const doAddClick = (exercise: string | undefined, date: string | undefined) : void => {
+        if (exercise && user) {
+            console.log("Adding exercise " + exercise + " on date " + date)
+            const obj = {
+                userID:user?.id,
+                addDate:date,
+                addExercise:exercise
+            }
+            fetch("http://localhost:8088/api/updateData", {
+                method: "POST",
+                headers: {
+                    "Content-type":"application/json"
+                },
+                body: JSON.stringify(obj)
+            })
+                .then (res => res.json())
+                .then(json => console.log(json.status))
+                .catch(error => console.log(error));
+        }
+        
+    }
+
     return (
     <>
         <SignedOut>
             <LandingPage onSignInClick={doSignIn} onCreateClick={doCreateAcc} />
         </SignedOut>
         <SignedIn>
-            <CalendarTest userID={user?.id} userName={user?.username} data={userData}
-                          userFirstName={user?.firstName} userLastName={user?.lastName} />
+            {userData ? (
+                <Calender
+                    userID={user?.id}
+                    userName={user?.username}
+                    userFirstName={user?.firstName}
+                    userLastName={user?.lastName}
+                    data={userData}
+                    onAddClick={doAddClick}
+                />
+            ) : (
+                <p>Loading user data...</p>
+            )}
         </SignedIn>
 
     </>
@@ -71,3 +102,9 @@ function App() {
 
 
 export default App
+
+
+// fetch(`http://localhost:8088/api/getUserData?id=${user.id}`)
+//     .then(res => res.json())
+//     .then(json => userData = json)
+//     .catch(error => console.log(error));
