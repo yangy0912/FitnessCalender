@@ -14,12 +14,12 @@ type CalendarProps = {
     userFirstName: string | null | undefined;
     userLastName: string | null |undefined;
     data : DataMap;
-    onAddClick: (exercise : String | undefined, date : String | undefined) => void;
+    onAddClick: (exercise : string | undefined, date : string | undefined) => void;
 }
 
 type CalendarState = {
     data : DataMap;
-    selectedDate?: String;
+    selectedDate?: string;
     clickPosition?: {top : number, left: number}
 }
 
@@ -95,7 +95,21 @@ export class Calender extends Component<CalendarProps, CalendarState>{
                         'Add Exercise to ' + this.state.selectedDate
                         : "Select a date to Add Exercise To"
                     } />
-                    <button onClick={() => {this.props.onAddClick(this.inputRef.current?.value, this.state.selectedDate)}} className="add-button"> Add! </button>
+                    <button onClick={() => {
+                        this.props.onAddClick(this.inputRef.current?.value, this.state.selectedDate);
+                        this.setState({
+                            selectedDate : undefined,
+                            clickPosition: undefined
+                        });
+                    }} className="add-button"> Add! </button>
+                    <button onClick={() => {
+                        this.setState({
+                            selectedDate : undefined,
+                            clickPosition: undefined
+                        });
+                    }} className="cancel-button">
+                        Cancel!
+                    </button>
                 </div>)}
             </>
         )
