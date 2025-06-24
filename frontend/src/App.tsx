@@ -74,6 +74,47 @@ function App() {
         
     }
 
+    const doModifyClick = (exercise: string | undefined, newExercise : string | undefined, date : string | undefined) : void => {
+        if (exercise && newExercise && user) {
+            const obj = {
+                userID:user?.id,
+                modifyDate:date,
+                exerciseToModify:exercise,
+                newExercise:newExercise
+            }
+            fetch("http://localhost:8088/api/modifyData", {
+                method: "POST",
+                headers: {
+                    "Content-type":"application/json"
+                },
+                body: JSON.stringify(obj)
+            })
+                .then (res => res.json())
+                .then(json => console.log(json.status))
+                .catch(error => console.log(error));
+        }
+    }
+
+    const doDeleteClick = (exercise: string | undefined, date: string | undefined) : void => {
+        if (exercise && user) {
+            const obj = {
+                userID:user?.id,
+                delExercise:exercise,
+                date:date
+            }
+            fetch("http://localhost:8088/api/deleteData", {
+                method: "POST",
+                headers: {
+                    "Content-type":"application/json"
+                },
+                body: JSON.stringify(obj)
+            })
+                .then(res => res.json())
+                .then(json => console.log(json.status))
+                .catch(error => console.log(error));
+        }
+    }
+
     return (
     <>
         <SignedOut>
@@ -88,6 +129,8 @@ function App() {
                     userLastName={user?.lastName}
                     data={userData}
                     onAddClick={doAddClick}
+                    onModifyClick={doModifyClick}
+                    onDeleteClick={doDeleteClick}
                 />
             ) : (
                 <p>Loading user data...</p>
@@ -102,9 +145,3 @@ function App() {
 
 
 export default App
-
-
-// fetch(`http://localhost:8088/api/getUserData?id=${user.id}`)
-//     .then(res => res.json())
-//     .then(json => userData = json)
-//     .catch(error => console.log(error));

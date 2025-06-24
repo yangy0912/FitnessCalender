@@ -15,18 +15,28 @@ type CalendarProps = {
     userLastName: string | null |undefined;
     data : DataMap;
     onAddClick: (exercise : string | undefined, date : string | undefined) => void;
+    onModifyClick: (exercise : string | undefined, newExercise : string | undefined, date : string | undefined) => void;
+    onDeleteClick: (exercise : string | undefined, date : string | undefined) => void;
 }
 
 type CalendarState = {
     data : DataMap;
     selectedDate?: string;
     clickPosition?: {top : number, left: number}
+    selectedEvent?: string;
+    selectedEventDate?: string;
 }
 
 export class Calender extends Component<CalendarProps, CalendarState>{
     constructor(props: CalendarProps) {
         super(props);
-        this.state = {data : this.props.data, selectedDate : undefined, clickPosition : undefined};
+        this.state = {
+            data : this.props.data, 
+            selectedDate : undefined, 
+            clickPosition : undefined,
+            selectedEvent : undefined,
+            selectedEventDate : undefined
+        };
     }
 
     calendarRef = createRef<FullCalendar>();
@@ -79,9 +89,23 @@ export class Calender extends Component<CalendarProps, CalendarState>{
                         clickPosition: {
                             top: info.jsEvent.pageY,
                             left: info.jsEvent.pageX
-                          }
+                          },
+                        selectedEvent : undefined,
+                        selectedEventDate : undefined
                     });
                 }}
+                eventClick={(info) => {
+                    console.log(info.event.title)
+                    this.setState({
+                        selectedEvent : info.event.title,
+                        selectedEventDate : info.event.startStr,
+                        clickPosition: {
+                            top: info.jsEvent.pageY,
+                            left: info.jsEvent.pageX
+                          },
+                          selectedDate : undefined
+                    });
+                }} 
                 />
                 {this.state.clickPosition && this.state.selectedDate && (<div
                 style={{
@@ -111,6 +135,41 @@ export class Calender extends Component<CalendarProps, CalendarState>{
                         Cancel!
                     </button>
                 </div>)}
+                {this.state.selectedEvent && this.state.selectedEventDate && this.state.clickPosition && (<div
+                style={{
+                    position: "absolute",
+                    top: this.state.clickPosition.top,
+                    left: this.state.clickPosition.left,
+                    zIndex: 9999
+                    }
+                }>
+                    <input ref = {this.inputRef} placeholder="Modify this event"/>
+                    <button onClick={() => {
+                        this.props.onModifyClick(this.state.selectedEvent, this.inputRef.current?.value, this.state.selectedEventDate);
+                        this.setState({
+                            selectedEvent : undefined,
+                            clickPosition : undefined,
+                            selectedEventDate : undefined
+                        })
+                    }}> Modify Event!</button>
+                    <button onClick={() => {
+                        this.props.onDeleteClick(this.state.selectedEvent, this.state.selectedEventDate)
+                        this.setState({
+                            selectedEvent : undefined,
+                            clickPosition : undefined,
+                            selectedEventDate : undefined
+                        })
+                    }}> Delete Event! </button>
+                    <button onClick={() => {
+                        this.setState({
+                            selectedEvent : undefined,
+                            clickPosition : undefined,
+                            selectedEventDate : undefined
+                        })
+                    }}> Cancel! </button>
+                </div>
+
+                )}
             </>
         )
     }
