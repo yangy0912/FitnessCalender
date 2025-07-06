@@ -27,29 +27,29 @@ type CalendarState = {
     selectedEventDate?: string;
 }
 
+
 export class Calender extends Component<CalendarProps, CalendarState>{
     constructor(props: CalendarProps) {
         super(props);
         this.state = {
-            data : this.props.data, 
+            data : this.props.data,
             selectedDate : undefined, 
             clickPosition : undefined,
             selectedEvent : undefined,
             selectedEventDate : undefined
         };
     }
-
+    
     calendarRef = createRef<FullCalendar>();
     inputRef = createRef<HTMLInputElement>();
     
     getEvents = () : {title: string, start: string}[] => {
         const events: {title: string, start: string}[] = []
-        if (!this.state.data) {
-            return []
-        } else if (!this.state.data['data']){
+        const eventData = this.state.data;
+        if (!eventData || !eventData['data']) {
             return []
         } else {
-            for (const [date, exercises] of Object.entries(this.state.data['data'])) {
+            for (const [date, exercises] of Object.entries(eventData['data'])) {
                 for (const exercise of exercises) {
                     events.push ({
                         title: exercise,
@@ -61,7 +61,7 @@ export class Calender extends Component<CalendarProps, CalendarState>{
         }
     }
     
-    
+
     render = () : JSX.Element => {
         console.log("Generated events:", this.getEvents());
         return (
@@ -135,6 +135,9 @@ export class Calender extends Component<CalendarProps, CalendarState>{
                         Cancel!
                     </button>
                 </div>)}
+                <button onClick={()=> {
+
+                }}>Test!</button>
                 {this.state.selectedEvent && this.state.selectedEventDate && this.state.clickPosition && (<div
                 style={{
                     position: "absolute",

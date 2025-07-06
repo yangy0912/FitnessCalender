@@ -68,7 +68,10 @@ function App() {
                 body: JSON.stringify(obj)
             })
                 .then (res => res.json())
-                .then(json => console.log(json.status))
+                .then(json => {
+                    console.log(json.status);
+                    fetchUserData().then(setUserData);
+                })
                 .catch(error => console.log(error));
         }
         
@@ -90,7 +93,10 @@ function App() {
                 body: JSON.stringify(obj)
             })
                 .then (res => res.json())
-                .then(json => console.log(json.status))
+                .then(json => {
+                    console.log(json.status);
+                    fetchUserData().then(setUserData);
+                })
                 .catch(error => console.log(error));
         }
     }
@@ -110,7 +116,10 @@ function App() {
                 body: JSON.stringify(obj)
             })
                 .then(res => res.json())
-                .then(json => console.log(json.status))
+                .then(json => {
+                    console.log(json.status);
+                    fetchUserData().then(setUserData);
+                })
                 .catch(error => console.log(error));
         }
     }
